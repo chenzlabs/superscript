@@ -24,9 +24,16 @@ const mongoURI = process.env.MONGO_URI
 
 import MongoMemoryServer from 'mongodb-memory-server';
 let mongod = null;
-if (mongoURI.indexOf('mongodb://localhost') === 0) {
+
+async function localMongo() {
   console.log('new MongoMemoryServer');
   mongod = new MongoMemoryServer({instance:{port:program.port}});
+  const uri = await mongod.getConnectionString();
+  console.log('... got connection string ', uri);
+}
+
+if (mongoURI.indexOf('mongodb://localhost') === 0) {
+  localMongo();
 }
 
 fs.exists(program.output, (exists) => {
