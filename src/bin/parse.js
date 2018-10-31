@@ -33,7 +33,7 @@ async function localMongo() {
 }
 
 if (mongoURI.indexOf('mongodb://localhost') === 0) {
-  localMongo();
+  await localMongo();
 }
 
 fs.exists(program.output, (exists) => {
