@@ -13,6 +13,9 @@ import Logger from './logger';
 
 const debug = debuglog('SS:SuperScript');
 
+import MongoMemoryServer from 'mongodb-memory-server';
+let mongod = null;
+
 class SuperScript {
   constructor(coreChatSystem, coreFactSystem, plugins, scope, editMode, conversationTimeout, historyCheckpoints, tenantId = 'master') {
     this.chatSystem = coreChatSystem.getChatSystem(tenantId);
@@ -277,6 +280,9 @@ const defaultOptions = {
 const setup = function setup(options = {}, callback) {
   options = _.merge(defaultOptions, options);
 
+  if (options.mongoURI.indexOf('mongodb://localhost') === 0) {
+    mongod = new MongoMemoryServer({instance:{port:27017,dbPath:'superscriptDB'}});
+  }
   // Uses schemas to create models for the db connection to use
   factSystem.setupFactSystem(options.mongoURI, options.factSystem, (err, coreFactSystem) => {
     if (err) {
