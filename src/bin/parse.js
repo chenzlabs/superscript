@@ -25,7 +25,7 @@ const mongoURI = process.env.MONGO_URI
 import MongoMemoryServer from 'mongodb-memory-server';
 let mongod = null;
 if (mongoURI.indexOf('mongodb://localhost') === 0) {
-  mongod = new MongoMemoryServer({instance:{port:program.port,dbPath:program.mongo}});
+  mongod = new MongoMemoryServer({instance:{port:program.port}});
 }
 
 fs.exists(program.output, (exists) => {
