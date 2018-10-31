@@ -22,6 +22,12 @@ const mongoURI = process.env.MONGO_URI
   || program.mongoURI
   || `mongodb://${program.host}:${program.port}/${program.mongo}`;
 
+import MongoMemoryServer from 'mongodb-memory-server';
+let mongod = null;
+if (mongoURI.indexOf('mongodb://localhost') === 0) {
+  mongod = new MongoMemoryServer({instance:{port:program.port,dbPath:program.mongo}});
+}
+
 fs.exists(program.output, (exists) => {
   if (exists && !program.force) {
     console.log('File', program.output, 'already exists, remove file first or use -f to force save.');
